@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
 import { PrismaEmployeeTimeRecordsRepository } from './prisma/repositories/employee-time-record.repository';
-import { EmployeeTimeRecordRepository } from 'src/domain/interfaces/employee-time-record.interface';
+import { EmployeeTimeRecordRepository } from '@/domain/interfaces/employee-time-record.interface';
 
 @Module({
   providers: [

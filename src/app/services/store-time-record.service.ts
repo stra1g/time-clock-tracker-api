@@ -1,9 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { EmployeeTimeRecordRepository } from '@domain/interfaces/employee-time-record.interface';
 import * as dayjs from 'dayjs';
 
 type StoreTimeRecordRequest = {
-  timestamp: string; // ISO string
+  timestamp?: string;
 };
 
 @Injectable()
@@ -13,11 +17,14 @@ export class StoreTimeRecordService {
   ) {}
 
   public async run({ timestamp }: StoreTimeRecordRequest) {
+    if (!timestamp)
+      throw new BadRequestException('Campo obrigatório não informado');
+
     const date = dayjs(timestamp);
     const dayOfWeek = date.day();
 
     if (dayOfWeek === 0 || dayOfWeek === 6)
-      throw new Error(
+      throw new BadRequestException(
         'Sábado e domingo não são permitidos como dia de trabalho',
       );
 
@@ -27,7 +34,9 @@ export class StoreTimeRecordService {
       );
 
     if (timeRecordCountByDay >= 4)
-      throw new Error('Apenas 4 horários podem ser registrados por dia');
+      throw new BadRequestException(
+        'Apenas 4 horários podem ser registrados por dia',
+      );
 
     if (timeRecordCountByDay === 2) {
       const lastTimeRecord =
@@ -39,13 +48,14 @@ export class StoreTimeRecordService {
       const diffInMinutes = date.diff(lastTimeRecordDate, 'minute');
 
       if (diffInMinutes < 60)
-        throw new Error('Deve haver no mínimo 1 hora de almoço');
+        throw new BadRequestException('Deve haver no mínimo 1 hora de almoço');
     }
 
     const alreadyStoredTimeRecord =
       await this.employeeTimeRecordRepository.findByDate(date.toISOString());
 
-    if (alreadyStoredTimeRecord) throw new Error('Horário já registrado');
+    if (alreadyStoredTimeRecord)
+      throw new ConflictException('Horário já registrado');
 
     await this.employeeTimeRecordRepository.create({
       timeRecordDate: date.toDate(),

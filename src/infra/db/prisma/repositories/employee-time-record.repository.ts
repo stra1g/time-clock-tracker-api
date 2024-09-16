@@ -1,5 +1,6 @@
 import { PrismaService } from '../prisma.service';
 import { Injectable } from '@nestjs/common';
+import { EmployeeTimeRecord } from '@prisma/client';
 import {
   CreateEmployeeTimeRecordDTO,
   EmployeeTimeRecordRepository,
@@ -18,22 +19,25 @@ export class PrismaEmployeeTimeRecordsRepository
   }
 
   async countByDay(day: string): Promise<number> {
-    return this.prismaService.employeeTimeRecord.count({
-      where: {
-        timeRecordDate: day,
-      },
-    });
+    const payload = await this.prismaService.$queryRaw`
+      SELECT COUNT(*)::int
+      FROM "EmployeeTimeRecord"
+      WHERE DATE_TRUNC('day', "timeRecordDate") = DATE_TRUNC('day', ${day}::timestamp)
+    `;
+
+    return payload ? payload[0].count : 0;
   }
 
   async getLastTimeRecord(day: string) {
-    return this.prismaService.employeeTimeRecord.findFirst({
-      where: {
-        timeRecordDate: day,
-      },
-      orderBy: {
-        timeRecordDate: 'desc',
-      },
-    });
+    const payload = await this.prismaService.$queryRaw`
+      SELECT *
+      FROM "EmployeeTimeRecord"
+      WHERE DATE_TRUNC('day', "timeRecordDate") = DATE_TRUNC('day', ${day}::timestamp)
+      ORDER BY "timeRecordDate" DESC
+      LIMIT 1
+    `;
+
+    return payload ? (payload[0] as EmployeeTimeRecord) : null;
   }
 
   async findByDate(date: string) {
@@ -44,11 +48,13 @@ export class PrismaEmployeeTimeRecordsRepository
     });
   }
 
-  async listRecordsByDay(date: string) {
-    return this.prismaService.employeeTimeRecord.findMany({
-      where: {
-        timeRecordDate: date,
-      },
-    });
+  async listRecordsByDay(day: string) {
+    const payload = await this.prismaService.$queryRaw`
+      SELECT *
+      FROM "EmployeeTimeRecord"
+      WHERE DATE_TRUNC('day', "timeRecordDate") = DATE_TRUNC('day', ${day}::timestamp)
+    `;
+
+    return payload as EmployeeTimeRecord[];
   }
 }

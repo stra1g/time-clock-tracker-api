@@ -20,6 +20,14 @@ describe('Store Time Record Service', () => {
     service = new StoreTimeRecordService(employeeTimeRecordRepository);
   });
 
+  it(`shouldn't be able to store time record if timestamp is not provided`, async () => {
+    const dto = {};
+
+    await expect(service.run(dto)).rejects.toThrow(
+      'Campo obrigatório não informado',
+    );
+  });
+
   it(`shouldn't be able to store time record if the day is Saturday`, async () => {
     const saturdayDate = new Date('2023-04-15T12:00:00Z'); // A Saturday
     const dto = {

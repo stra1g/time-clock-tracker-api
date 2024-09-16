@@ -15,4 +15,6 @@ export default {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '<rootDir>/',
   }),
+  globalSetup: './test/jest.global-setup.ts',
+  globalTeardown: './test/jest.global-teardown.ts',
 };

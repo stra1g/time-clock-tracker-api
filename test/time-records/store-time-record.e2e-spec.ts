@@ -15,7 +15,16 @@ describe('Store Time Record (e2e)', () => {
     await app.init();
   });
 
-  it('/v1/batidas (POST)', () => {
-    return request(app.getHttpServer()).post('/v1/batidas').expect(201);
+  it('/v1/batidas (POST)', async () => {
+    const date = new Date('2023-04-17T09:00:00Z');
+
+    const response = await request(app.getHttpServer())
+      .post('/batidas')
+      .send({
+        momento: date.toISOString(),
+      })
+      .expect(201);
+
+    console.log('body: ', response.body);
   });
 });

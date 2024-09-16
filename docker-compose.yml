@@ -10,7 +10,7 @@ services:
     depends_on:
       - db
     environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/time_record
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/time_record
 
   db:
     image: postgres:13

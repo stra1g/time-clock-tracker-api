@@ -20,6 +20,7 @@ This project is a NestJS-based API for time record management.
    or
    ```bash
    pnpm install
+   # recommended
    ```
 3. Copy the example environment file:
    ```bash
@@ -30,7 +31,7 @@ This project is a NestJS-based API for time record management.
    chmod +x init-multiple-databases.sh
    ```
 
-## Running the Application
+## Running the Application in local environment
 
 1. Start the Docker containers:
    ```bash
@@ -42,9 +43,7 @@ This project is a NestJS-based API for time record management.
    ```
 2. Pull the database schema:
    ```bash
-   npx prisma db pull
+   npx prisma migrate dev
    ```
 
 The application is now running and can be accessed on port 8000 of your machine.
-
-## Development

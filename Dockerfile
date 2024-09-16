@@ -12,7 +12,7 @@ COPY . .
 
 RUN pnpm run build
 
-EXPOSE 3000
+EXPOSE 8000
 
 ENV DATABASE_URL=your_database_url_here
 

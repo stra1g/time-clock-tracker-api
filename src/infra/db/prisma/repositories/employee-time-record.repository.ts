@@ -92,7 +92,7 @@ export class PrismaEmployeeTimeRecordsRepository
         AND DATE_TRUNC('day', clock_ins.clock_in_time) = DATE_TRUNC('day', clock_outs.clock_out_time);
     `;
 
-    return payload[0].total_worked_hours;
+    return +payload[0].total_worked_hours;
   }
 
   async listWorkingHoursByMonth(yearMonth: string) {

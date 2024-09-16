@@ -25,6 +25,9 @@ describe('Store Time Record (e2e)', () => {
       })
       .expect(201);
 
-    console.log('body: ', response.body);
+    expect(response.body).toHaveProperty('dia');
+    expect(response.body).toHaveProperty('pontos');
+    expect(response.body.pontos).toHaveLength(1);
+    expect(response.body.dia).toBe('2023-04-17');
   });
 });

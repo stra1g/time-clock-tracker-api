@@ -15,7 +15,6 @@ export class TimeSheetsController {
     @Res() res: Response,
     @Param() params: GenerateTimeSheetDTO,
   ) {
-    console.log(params.anoMes);
     const payload = await this.generateTimeSheetService.run({
       yearMonth: params.anoMes,
     });

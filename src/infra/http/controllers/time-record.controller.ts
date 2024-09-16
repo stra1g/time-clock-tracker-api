@@ -18,7 +18,6 @@ export class TimeRecordController {
     @Body() { momento: timestamp }: StoreTimeRecordDTO,
     @Res() res: Response,
   ) {
-    console.log('timestamp', timestamp);
     const payload = await this.storeTimeRecordService.run({
       timestamp,
     });

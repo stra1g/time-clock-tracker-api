@@ -5,6 +5,11 @@ export type CreateEmployeeTimeRecordDTO = {
   recordType: 'CLOCK_IN' | 'CLOCK_OUT';
 };
 
+export type WorkingHoursByMonth = {
+  dia: string;
+  pontos: string[];
+};
+
 export abstract class EmployeeTimeRecordRepository {
   abstract create(
     data: CreateEmployeeTimeRecordDTO,
@@ -13,4 +18,8 @@ export abstract class EmployeeTimeRecordRepository {
   abstract getLastTimeRecord(day: string): Promise<EmployeeTimeRecord | null>;
   abstract findByDate(date: string): Promise<EmployeeTimeRecord | null>;
   abstract listRecordsByDay(date: string): Promise<EmployeeTimeRecord[]>;
+  abstract countTotalHoursByMonth(yearMonth: string): Promise<number>;
+  abstract listWorkingHoursByMonth(
+    yearMonth: string,
+  ): Promise<WorkingHoursByMonth[]>;
 }

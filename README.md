@@ -42,8 +42,30 @@ This project is a NestJS-based API for time record management.
    docker compose up -d
    ```
 2. Pull the database schema:
+
    ```bash
    npx prisma migrate dev
    ```
 
 The application is now running and can be accessed on port 8000 of your machine.
+
+3. Run tests:
+
+   ```bash
+   pnpm test
+   ```
+
+   or
+
+   ```bash
+   npm run test
+   ```
+
+4. Run end-to-end tests:
+   ```bash
+   pnpm test:e2e
+   ```
+   or
+   ```bash
+   npm run test:e2e
+   ```
